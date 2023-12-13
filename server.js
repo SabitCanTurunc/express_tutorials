@@ -1,6 +1,6 @@
 import express from 'express'
 const app = express()
-const database = require("./database")
+import * as database from './database.js'
 app.set("view engine", "ejs")
 
 
