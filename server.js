@@ -27,15 +27,20 @@ const notes =[
 app.get('/notes',(req,res)=>{
   res.render("notes.ejs",{
     notes,
-  })
+  });
 })
 
 app.get('/notes/:id',(req,res)=>{
   const id = +req.params.id
   const note= notes.find(note => note.id === id)
+
+  if(!note){
+    res.status(404).render("note404.ejs")
+    return
+  }
   res.render("singleNote.ejs",{
     note,
-  })
+  });
 })
 
 
