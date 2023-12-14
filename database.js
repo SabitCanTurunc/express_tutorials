@@ -1,4 +1,4 @@
-const notes = [
+let notes = [
   {
     id: 1,
     title: "My first Note",
@@ -24,10 +24,15 @@ export function getNote(id) {
 }
 
 export function addNote(note) {
-  
+  notes.push({
+    ...note,
+    id: notes.length +1,
+    timestamp: Date.now()
+
+  })
 }
 
 export function deleteNote(id) {
-  
+  notes = notes.filter((note)=> note.id !== id)
 }
 
