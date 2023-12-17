@@ -1,4 +1,4 @@
-let notes = [
+/*let notes = [
   {
     id: 1,
     title: "My first Note",
@@ -35,4 +35,44 @@ export function addNote(note) {
 export function deleteNote(id) {
   notes = notes.filter((note)=> note.id !== id)
 }
+*/
+
+
+import mysql from 'mysql2'
+import dotenv from 'dotenv'
+dotenv.config()
+
+const pool = mysql.createPool({
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DASTBASE
+}).promise()
+
+export async function getNotes() {
+  const [rows] = await pool.query("SELECT * FROM notes")
+  return rows
+}
+
+export async function getNote(id) {
+
+  console.log("sfd")
+  const [rows] = await pool.query(
+    `SELECT * FROM notes
+    WHERE id= ?`, [id]
+  )
+  console.log("sfsdd")
+
+  return rows
+}
+
+export async function addNote(title, content) {
+    
+    await pool.query(
+    `INSERT INTO notes (title, contents)
+    VALUES(?,?)`, [title, content]
+  )
+
+}
+
 

@@ -11,16 +11,17 @@ app.get('/',(req,res)=>{
 })
 
 
-app.get('/notes',(req,res)=>{
-  const notes=database.getNotes();
+app.get('/notes',async (req,res)=>{
+  const notes=await database.getNotes();
   res.render("notes.ejs",{
     notes,
   });
 })
 
-app.get('/notes/:id',(req,res)=>{
+app.get('/notes/:id',async (req,res)=>{
   const id = +req.params.id
-  const note= database.getNote(id)
+  const note2= await database.getNote(id)
+  const note = note2[0]
 
   if(!note){
     res.status(404).render("note404.ejs")
@@ -31,22 +32,23 @@ app.get('/notes/:id',(req,res)=>{
   });
 })
 
-app.get('/createNote',(req,res)=>{
+app.get('/createNote', (req,res)=>{
   res.render('createNote.ejs')
 })
 
-app.post('/notes2',(req,res)=>{
+app.post('/notes2',async (req,res)=>{
   const data = req.body
-  database.addNote(data)
+  console.log(data)
+  await database.addNote(data.title,data.contents)
 
 
   res.redirect("/notes")
 
 })
 
-app.post("/notes/:id/delete",(req,res)=>{
+app.post("/notes/:id/delete",async (req,res)=>{
   const id = +req.params.id
-  database.deleteNote(id)
+  await database.deleteNote(id)
   res.redirect("/notes")
 
 })
